@@ -1,0 +1,21 @@
+<html>
+   <head>
+      <script
+           src="https://code.jquery.com/jquery-3.2.1.js">
+      </script>
+      <!--Adding our server conn javascript file -->
+      <script type="text/javascript" src="/static/server_conn.js">
+      </script>
+   </head>
+   <body>
+      <div>
+                <form>
+                <label >Response </label>
+                    <div id="Response"></div><br>
+                    <input type="text" id="name"  placeholder="Enter stock name"><br><br>
+                    <input type="text" id="days" placeholder="Enter days into the future"><br><br>
+                <input type="button" value="Submit", id="login", onclick="send_button()">
+                </form>
+      </div>
+   </body>
+</html>
