@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import fbprophet
 from botocore.vendored import requests
-from pytrends.request import TrendReq
 import os
 
 # matplotlib pyplot for plotting
@@ -760,28 +759,6 @@ class Stocker():
             plt.grid(alpha=0.2);
             plt.show()
 
-    def retrieve_google_trends(self, search, date_range):
-
-        # Set up the trend fetching object
-        pytrends = TrendReq(hl='en-US', tz=360)
-        kw_list = [search]
-
-        try:
-
-            # Create the search object
-            pytrends.build_payload(kw_list, cat=0, timeframe=date_range[0], geo='', gprop='news')
-
-            # Retrieve the interest over time
-            trends = pytrends.interest_over_time()
-
-            related_queries = pytrends.related_queries()
-
-        except Exception as e:
-            print('\nGoogle Search Trend retrieval failed.')
-            print(e)
-            return
-
-        return trends, related_queries
 
     def changepoint_date_analysis(self, search=None):
         self.reset_plot()
