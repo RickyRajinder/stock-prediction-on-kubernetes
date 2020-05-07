@@ -6,16 +6,29 @@
       <!--Adding our server conn javascript file -->
       <script type="text/javascript" src="/static/server_conn.js">
       </script>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
    </head>
    <body>
       <div>
-                <form>
-                <label >Response </label>
-                    <div id="Response"></div><br>
-                    <input type="text" id="name"  placeholder="Enter stock name"><br><br>
-                    <input type="text" id="days" placeholder="Enter days into the future"><br><br>
-                <input type="button" value="Submit", id="login", onclick="send_button()">
+          <nav class="navbar navbar-dark bg-dark">
+             <a class="navbar-brand" href="/">Stock Price Prediction</a>
+          </nav>
+
+          <br>
+              
+                
+
+                <form  class="card mx-auto" style="max-width: 18rem;">
+                  <div class="form-group">
+                    <label >Response </label>
+                        <div id="Response"></div><br>
+                        <input class="form-control-sm"type="text" id="name"  placeholder="Enter stock name"><br><br>
+                        <input class="form-control-sm" type="text" id="days" placeholder="Enter days into the future"><br><br>
+                    <input  class="btn btn-primary" type="button" value="Submit", id="login", onclick="send_button()">
+                    </div>
                 </form>
+
+              
       </div>
    </body>
 </html>
