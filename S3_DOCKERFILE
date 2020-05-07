@@ -1,0 +1,14 @@
+FROM python:3
+
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+COPY pull_data_push_to_s3.py .
+
+COPY ~/.aws/credentials .aws/
+
+EXPOSE 8080
+
+CMD ["python3", "pull_data_push_to_s3.py"]
+
+
