@@ -18,7 +18,7 @@ import matplotlib
 # Contains a number of visualizations and analysis methods
 class Stocker():
 
-    def symbol_to_path(self,symbol, base_dir=""):
+    def symbol_to_path(self, symbol, base_dir=""):
         """Return CSV file path given ticker symbol."""
         return os.path.join(base_dir, "{}.csv".format(str(symbol)))
 
@@ -34,83 +34,98 @@ class Stocker():
         # Use Personal Api Key
         quandl.ApiConfig.api_key = 'rneS7suX3btgLTxtPgVK'
 
-
         if exchange in "CSV":
             print("Load from CSV file...")
-            stock = pd.read_csv(self.symbol_to_path(ticker,csv_repository), index_col='Date',
+            stock = pd.read_csv(self.symbol_to_path(ticker, csv_repository), index_col='Date',
                                 parse_dates=True,
-                                usecols=['Date', 'Open','High','Low','Adj. Close','Adj. Low', 'Adj. Open','Volume'],
+                                usecols=['Date', 'Open', 'High', 'Low', 'Adj. Close', 'Adj. Low', 'Adj. Open',
+                                         'Volume'],
                                 na_values=['nan'])
-            #print(stock.head(5))
+            # print(stock.head(5))
+            # Set the index to a column called Date
+            stock = stock.reset_index(level=0)
+
+            # Columns required for prophet
+            stock['ds'] = stock['Date']
+
+            if ('Adj. Close' not in stock.columns):
+                stock['Adj. Close'] = stock['Close']
+                stock['Adj. Open'] = stock['Open']
+
+            stock['y'] = stock['Adj. Close']
+            stock['Daily Change'] = stock['Adj. Close'] - stock['Adj. Open']
+
+            # Data assigned as class attribute
+            self.stock = stock.copy()
         else:
             # Retrieval the financial data from QUANDL
             try:
                 stock = quandl.get('%s/%s' % (exchange, ticker))
+
+                stock = stock.reset_index(level=0)
+
+                # Columns required for prophet
+                stock['ds'] = stock['Date']
+
+                if ('Adj. Close' not in stock.columns):
+                    stock['Adj. Close'] = stock['Close']
+                    stock['Adj. Open'] = stock['Open']
+
+                stock['y'] = stock['Adj. Close']
+                stock['Daily Change'] = stock['Adj. Close'] - stock['Adj. Open']
+                self.max_date = max(stock['Date'])
+
+                # Data assigned as class attribute
+                self.stock = stock.copy()
+
+                # add data from tiingo
+                next_date = self.max_date + pd.to_timedelta(1, unit='d')
+                next_date_str = next_date.strftime(format='%Y-%m-%d')
+
+                # add your tiingo api_key here
+                tg_api_key = "ba6a0c7992a1edf5b73ed81109e5bb64519f5adc"
+                tg_url = "https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=" + next_date_str + "&token=" + tg_api_key
+                headers = {
+                    'Content-Type': 'application/json'
+                }
+                tg_resp = requests.get(tg_url, headers=headers)
+                tg_json = tg_resp.json()
+                tg_df = pd.DataFrame(tg_json)
+
+                # Rename
+                tg_df_st = tg_df.rename(columns={"adjClose": "Adj. Close",
+                                                 "adjHigh": "Adj. High",
+                                                 "adjLow": "Adj. Low",
+                                                 "adjOpen": "Adj. Open",
+                                                 "adjVolume": "Adj. Volume",
+                                                 "close": "Close",
+                                                 "date": "Date",
+                                                 "divCash": "Ex-Dividend",
+                                                 "high": "High",
+                                                 "low": "Low",
+                                                 "open": "Open",
+                                                 "splitFactor": "Split Ratio",
+                                                 "volume": "Volume"})
+                for i, row in tg_df_st.iterrows():
+                    tg_df_st.at[i, 'Date'] = pd.Timestamp(tg_df_st.at[i, 'Date'][0:10])
+                    # tg_df_st.at[i, 'Adj. Close'] = tg_df_st.at[i, 'Close']
+                    # tg_df_st.at[i, 'Adj. Open'] = tg_df_st.at[i, 'Open']
+                    tg_df_st.at[i, 'Daily Change'] = tg_df_st.at[i, 'Close'] - tg_df_st.at[i, 'Open']
+                    tg_df_st.at[i, 'ds'] = tg_df_st.at[i, 'Date']
+                    tg_df_st.at[i, 'y'] = tg_df_st.at[i, 'Close']
+
+                self.stock = stock.copy()
+                self.orig_stock = stock.copy()
+                self.stock = self.stock.append(tg_df_st, ignore_index=True)
 
             except Exception as e:
                 print('Error Retrieving Data.')
                 print(e)
                 return
 
-        # Set the index to a column called Date
-        stock = stock.reset_index(level=0)
-
-        # Columns required for prophet
-        stock['ds'] = stock['Date']
-
-        if ('Adj. Close' not in stock.columns):
-            stock['Adj. Close'] = stock['Close']
-            stock['Adj. Open'] = stock['Open']
-
-        stock['y'] = stock['Adj. Close']
-        stock['Daily Change'] = stock['Adj. Close'] - stock['Adj. Open']
-
-        # Data assigned as class attribute
-        self.stock = stock.copy()
-
         # Minimum and maximum date in range
         self.min_date = min(stock['Date'])
         self.max_date = max(stock['Date'])
-
-        # add data from tiingo
-        next_date = self.max_date + pd.to_timedelta(1, unit='d')
-        next_date_str = next_date.strftime(format='%Y-%m-%d')
-
-        # add your tiingo api_key here
-        tg_api_key = "ba6a0c7992a1edf5b73ed81109e5bb64519f5adc"
-        tg_url = "https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=" + next_date_str + "&token=" + tg_api_key
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        tg_resp = requests.get(tg_url, headers=headers)
-        tg_json = tg_resp.json()
-        tg_df = pd.DataFrame(tg_json)
-
-        # Rename
-        tg_df_st = tg_df.rename(columns={"adjClose": "Adj. Close",
-                                         "adjHigh": "Adj. High",
-                                         "adjLow": "Adj. Low",
-                                         "adjOpen": "Adj. Open",
-                                         "adjVolume": "Adj. Volume",
-                                         "close": "Close",
-                                         "date": "Date",
-                                         "divCash": "Ex-Dividend",
-                                         "high": "High",
-                                         "low": "Low",
-                                         "open": "Open",
-                                         "splitFactor": "Split Ratio",
-                                         "volume": "Volume"})
-        for i, row in tg_df_st.iterrows():
-            tg_df_st.at[i, 'Date'] = pd.Timestamp(tg_df_st.at[i, 'Date'][0:10])
-            # tg_df_st.at[i, 'Adj. Close'] = tg_df_st.at[i, 'Close']
-            # tg_df_st.at[i, 'Adj. Open'] = tg_df_st.at[i, 'Open']
-            tg_df_st.at[i, 'Daily Change'] = tg_df_st.at[i, 'Close'] - tg_df_st.at[i, 'Open']
-            tg_df_st.at[i, 'ds'] = tg_df_st.at[i, 'Date']
-            tg_df_st.at[i, 'y'] = tg_df_st.at[i, 'Close']
-
-        self.orig_stock = stock.copy()
-        self.stock = self.stock.append(tg_df_st, ignore_index=True)
-        self.max_date = max(self.stock['Date'])
 
         # Find max and min prices and dates on which they occurred
         self.max_price = np.max(self.stock['y'])
@@ -142,7 +157,6 @@ class Stocker():
         self.yearly_seasonality = True
         self.changepoints = None
 
-        # self.stock.to_csv('MSFT.csv')
         print('{} Stocker Initialized. Data covers {} to {}.'.format(self.symbol,
                                                                      self.min_date.date(),
                                                                      self.max_date.date()))
@@ -217,9 +231,9 @@ class Stocker():
         # If user wants to round dates (default behavior)
         if self.round_dates:
             # Record if start and end date are in df
-            if (start_date not in list(df['Date'])):
+            if start_date not in list(df['Date']):
                 start_in = False
-            if (end_date not in list(df['Date'])):
+            if end_date not in list(df['Date']):
                 end_in = False
 
             # If both are not in dataframe, round both
@@ -241,8 +255,6 @@ class Stocker():
                     elif (not end_in):
                         trim_df = df[(df['Date'] >= start_date.date()) &
                                      (df['Date'] < end_date.date())]
-
-
         else:
             valid_start = False
             valid_end = False
@@ -495,7 +507,7 @@ class Stocker():
         plt.show()
 
     # Basic prophet model for specified number of days
-    def create_prophet_model(self, days=0, resample=False):
+    def create_prophet_model(self, days=0, resample=False, symbol="", requestID=""):
 
         self.reset_plot()
 
@@ -511,14 +523,14 @@ class Stocker():
         model.fit(stock_history)
 
         # Make and predict for next year with future dataframe
-        future = model.make_future_dataframe(periods=days, freq='D')
+        future = model.make_future_dataframe(periods=int(days), freq='D')
         future = model.predict(future)
 
         if days > 0:
             # Print the predicted price
             print('Predicted Price on {} = ${:.2f}'.format(
                 future.loc[len(future) - 1, 'ds'].date(), future.loc[len(future) - 1, 'yhat']))
-
+            price = '${:.2f}'.format(future.loc[len(future) - 1, 'yhat'])
             title = '%s Historical and Predicted Stock Price' % self.symbol
         else:
             title = '%s Historical and Modeled Stock Price' % self.symbol
@@ -542,10 +554,9 @@ class Stocker():
         plt.ylabel('Price $');
         plt.grid(linewidth=0.6, alpha=0.6)
         plt.title(title);
-        plt.savefig('1dsd.png')
-        plt.show()
+        plt.savefig(symbol+"_"+requestID+".png")
 
-        return model, future
+        return price
 
     # Evaluate prediction model for one year
     def evaluate_prediction(self, start_date=None, end_date=None, nshares=None):
