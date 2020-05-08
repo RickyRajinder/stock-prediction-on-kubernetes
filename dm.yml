@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: data-model
-        image: rickywraith/stock-predict-dm:v2
+        image: rickywraith/stock-predict-dm:v5
         ports:
         - containerPort: 8080
 

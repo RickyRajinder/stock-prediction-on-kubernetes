@@ -1,4 +1,4 @@
-var server = "http://e06f4916.ngrok.io";
+var server = "http://127.0.0.1:5000";
 var send_msg = {'name':"",'days': "",'requestID':""};
 //var send_msg2 = {'days':""};
 

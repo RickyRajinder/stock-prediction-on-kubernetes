@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: web-server
-        image: rickywraith/stock-predict-dm:v2
+        image: rickywraith/stock-predict-ws:v5
         ports:
         - containerPort: 5000
 
