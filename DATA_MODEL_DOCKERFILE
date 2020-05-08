@@ -1,6 +1,6 @@
 FROM rickywraith/stock-predict-base:v2
 
-COPY pull_data_push_to_s3.py .
+COPY generate_prediction_model.py .
 
 COPY credentials /root/.aws/
 
@@ -8,6 +8,6 @@ COPY stocker.py .
 
 EXPOSE 8080
 
-CMD ["python3", "pull_data_push_to_s3.py"]
+CMD ["python3", "generate_prediction_model.py"]
 
 
