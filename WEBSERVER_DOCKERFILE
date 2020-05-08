@@ -1,0 +1,15 @@
+FROM rickywraith/stock-predict-base:v2
+
+COPY static/server_conn.js static/server_conn.js
+
+COPY companylist.csv .
+
+COPY templates/index.html templates/index.html
+
+COPY app.py .
+
+EXPOSE 5000
+
+CMD ["python3", "app.py"]
+
+
