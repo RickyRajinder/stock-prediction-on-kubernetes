@@ -24,7 +24,8 @@ class Stocker():
     # Initialization requires a ticker symbol
     def __init__(self, ticker, exchange='WIKI', csv_repository=""):
 
-        # Enforce capitalization
+        # Enforce capitalizationargument of type 'int' is not iterable
+
         ticker = ticker.upper()
 
         # Symbol is used for labeling plots
@@ -60,7 +61,7 @@ class Stocker():
             # Retrieval the financial data from QUANDL
             try:
                 stock = quandl.get('%s/%s' % (exchange, ticker))
-
+                print(stock)
                 stock = stock.reset_index(level=0)
 
                 # Columns required for prophet

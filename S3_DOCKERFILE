@@ -1,7 +1,4 @@
-FROM python:3
-
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+FROM rickywraith/stock-predict-base:latest
 
 COPY pull_data_push_to_s3.py .
 

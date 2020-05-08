@@ -5,9 +5,10 @@ import boto3
 import redis
 
 from stocker import Stocker
-DEFAULT_PORT = 8080
-REDIS_SERVICE = 'redis'
-r = redis.Redis(host=socket.gethostbyname(REDIS_SERVICE))
+NODE_ADDRESS = '127.0.0.1'
+DM_PORT = 32428
+
+r = redis.Redis(host=NODE_ADDRESS)
 
 
 def receive():
@@ -39,7 +40,7 @@ def receive():
         r.set(request_symbol+"_price_"+requestID, predicted_price)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('127.0.0.1', DEFAULT_PORT))
+    s.bind(('127.0.0.1', DM_PORT))
     s.listen()
     while True:
         client, address = s.accept()
