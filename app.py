@@ -12,7 +12,8 @@ app = Flask(__name__)
 CORS(app)
 
 NODE_ADDRESS = '127.0.0.1'
-S3_SERVICE = 31605
+S3_SERVICE_NAME = 's3-service'
+S3_SERVICE_PORT = 8080
 
 
 def isInt(s):
@@ -44,7 +45,7 @@ def get_message():
             return jsonify(resp)
         requestID = data['requestID']['randInt']
         sock = socket.socket()
-        sock.connect((NODE_ADDRESS, S3_SERVICE))
+        sock.connect((S3_SERVICE_NAME, S3_SERVICE_PORT))
         msg = requestID + "," + symbol + "," + days
         sock.send(msg.encode('ascii'))
         sock.close()
