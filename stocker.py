@@ -7,10 +7,12 @@ import fbprophet
 from botocore.vendored import requests
 import os
 
+import matplotlib
+matplotlib.use('Agg')
+
 # matplotlib pyplot for plotting
 import matplotlib.pyplot as plt
 
-import matplotlib
 
 
 # Class for analyzing and (attempting) to predict future prices
