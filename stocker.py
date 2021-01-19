@@ -436,11 +436,7 @@ class Stocker():
     def create_model(self):
 
         # Make the model
-        model = fbprophet.Prophet(daily_seasonality=self.daily_seasonality,
-                                  weekly_seasonality=self.weekly_seasonality,
-                                  yearly_seasonality=self.yearly_seasonality,
-                                  changepoint_prior_scale=self.changepoint_prior_scale,
-                                  changepoints=self.changepoints)
+        model = fbprophet.Prophet()
 
         if self.monthly_seasonality:
             # Add monthly seasonality
