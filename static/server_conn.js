@@ -25,6 +25,7 @@ function send_button()
     var appdir="/";
     update_var();
     console.log(send_msg)
+    console.log(server)
 
     $.ajax({
             type: "POST",
