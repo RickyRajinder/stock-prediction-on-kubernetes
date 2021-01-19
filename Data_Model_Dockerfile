@@ -1,4 +1,4 @@
-FROM rickywraith/stock-predict-base:v7
+FROM rickywraith/stock-predict-base:v8
 
 ARG AWS_ACCESS_KEY_ID
 

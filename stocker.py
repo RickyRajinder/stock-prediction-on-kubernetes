@@ -1,14 +1,13 @@
 # Quandl for financial analysis, pandas and numpy for data manipulation
 # fbprophet for additive models, #pytrends for Google trend data
+import matplotlib
+matplotlib.use('Agg')
 import quandl
 import pandas as pd
 import numpy as np
 import fbprophet
 from botocore.vendored import requests
 import os
-
-import matplotlib
-matplotlib.use('Agg')
 
 # matplotlib pyplot for plotting
 import matplotlib.pyplot as plt
