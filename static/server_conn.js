@@ -1,4 +1,4 @@
-var server = "http://35.192.84.138:5000";
+var server = "http://34.69.17.141:5000";
 var send_msg = {'name':"",'days': "",'requestID':""};
 //var send_msg2 = {'days':""};
 
