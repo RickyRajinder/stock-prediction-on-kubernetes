@@ -1,5 +1,9 @@
 FROM rickywraith/stock-predict-base:v2
 
+ARG AWS_ACCESS_KEY_ID
+
+ARG AWS_SECRET_KEY
+
 COPY generate_prediction_model.py .
 
 RUN mkdir -p /root/.aws/

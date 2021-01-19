@@ -1,3 +1,4 @@
+echo $AWS_ACCESS_KEY_ID
 docker build --build-arg AWS_SECRET_KEY=$AWS_SECRET_KEY --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -t rickywraith/stock-predict-dm:latest -t rickywraith/stock-predict-dm:$SHA -f ./Data_Model_Dockerfile .
 docker build --build-arg AWS_SECRET_KEY=$AWS_SECRET_KEY --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -t rickywraith/stock-predict-s3:latest -t rickywraith/stock-predict-s3:$SHA -f ./S3_Dockerfile .
 docker build -t rickywraith/stock-predict-ws:latest -t rickywraith/stock-predict-ws:$SHA -f ./Webserver_Dockerfile .
