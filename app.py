@@ -56,10 +56,7 @@ def get_message():
             price = r.get(symbol + "_price_" + requestID)
         price = price.decode("ascii")
         graph = r.get(symbol + "_" + requestID)
-        while price is None:
-            sleep(0.05)
-            graph = r.get(symbol + "_" + requestID)
-        graph = base64.encodebytes(graph)
+        graph = base64.b64encode(graph).decode('ascii')
         resp = {"message": "The predicted price for " + symbol + " for " + days + " days from now is " + str(price),
                 "graph": graph}
 
