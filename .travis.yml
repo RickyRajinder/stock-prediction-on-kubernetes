@@ -1,0 +1,23 @@
+sudo: required
+services:
+        - docker
+env:
+        global:
+                - SHA=$(git rev-parse HEAD)
+                - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+before_install:
+        - openssl aes-256-cbc -K $encrypted_b48fb9dcd03f_key -iv $encrypted_b48fb9dcd03f_iv -in stock-predict-k8s-d3de546ff4a7.json.enc -out stock-predict-k8s-d3de546ff4a7.json -d
+        - curl https://sdk.cloud.google.com | bash > /dev/null;
+        - source $HOME/google-cloud-sdk/path.bash.inc
+        - gcloud components update kubectl
+        - gcloud auth activate-service-account --key-file service-account.json
+        - gcloud config set project stock-predict-k8s
+        - gcloud config set compute/zone us-central1-c
+        - gcloud container clusters get-credentials stock-predict --zone us-central1-c --project stock-predict-k8s
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+deploy:
+        provider: script
+        script: bash ./deploy.sh
+        on:
+                branch: master
+

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: web-server
-        image: rickywraith/stock-predict-ws:v5
+        image: rickywraith/stock-predict-ws:latest
         ports:
         - containerPort: 5000
 
@@ -27,9 +27,8 @@ metadata:
   labels:
     run: web-server
 spec:
+  type: LoadBalancer
   ports:
-  - port: 5000
+  - protocol: TCP
+    port: 5000
     targetPort: 5000
-    protocol: TCP
-  selector:
-    run: web-server

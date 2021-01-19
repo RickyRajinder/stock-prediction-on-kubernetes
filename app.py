@@ -11,7 +11,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-NODE_ADDRESS = '127.0.0.1'
+REDIS_SERVICE = 'redis-service'
 S3_SERVICE_NAME = 's3-service'
 S3_SERVICE_PORT = 8080
 
@@ -49,7 +49,7 @@ def get_message():
         msg = requestID + "," + symbol + "," + days
         sock.send(msg.encode('ascii'))
         sock.close()
-        r = redis.Redis(host=NODE_ADDRESS)
+        r = redis.Redis(host=REDIS_SERVICE)
         price = r.get(symbol + "_price_" + requestID)
         while price is None:
             sleep(0.05)

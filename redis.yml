@@ -1,22 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-name: redis-deployment
+        name: redis-deployment
 spec:
-replicas: 2
-selector:
-  matchLabels:
-          component: redis
-template:
-  metadata:
-          labels:
-                  component: redis
-  spec:
-          containers:
-                  - name: redis
-                    image: redis
-                    ports:
-                            - containerPort: 6379
+        replicas: 2
+        selector:
+                matchLabels:
+                        component: redis
+        template:
+                metadata:
+                        labels:
+                                component: redis
+                spec:
+                        containers:
+                                - name: redis
+                                  image: redis
+                                  ports:
+                                          - containerPort: 6379
+
+
 
 ---
 
@@ -40,5 +42,5 @@ metadata:
         name: redis-secrets
 type: Opaque
 stringData:
-        redisHost: redis-cluster-ip-service
+        redisHost: redis-service
         redisPort: '6379'

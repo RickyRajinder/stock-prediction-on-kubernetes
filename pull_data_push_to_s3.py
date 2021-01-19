@@ -7,9 +7,10 @@ import boto3
 
 from stocker import Stocker
 
-DM_PORT = 32428
-NODE_ADDRESS = '127.0.0.1'
-S3_SERVICE = 31605
+REDIS_SERVICE = 'redis-service'
+DM_SERVICE = 'data-model'
+DM_PORT = 8080
+S3_SERVICE_PORT = 8080
 
 
 def receive():
@@ -47,13 +48,13 @@ def receive():
             my_bucket.upload_file(request_symbol+'.csv', Key=request_symbol+'.csv')
             os.remove(request_symbol+'.csv')
         sock = socket.socket()
-        sock.connect((NODE_ADDRESS, DM_PORT))
+        sock.connect((DM_SERVICE, DM_PORT))
         msg = requestID+","+request_symbol+","+days_into_future
         sock.send(msg.encode('ascii'))
         sock.close()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('127.0.0.1', S3_SERVICE))
+    s.bind(('127.0.0.1', S3_SERVICE_PORT))
     s.listen()
     while True:
         client, address = s.accept()

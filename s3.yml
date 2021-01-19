@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: s3-service
-        image: rickywraith/stock-predict-s3:v5
+        image: rickywraith/stock-predict-s3:latest
         ports:
         - containerPort: 8080
 

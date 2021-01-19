@@ -5,10 +5,11 @@ import boto3
 import redis
 
 from stocker import Stocker
-NODE_ADDRESS = '127.0.0.1'
-DM_PORT = 32428
+REDIS_SERVICE = 'redis-service'
+DM_SERVICE = 'data-model'
+DM_PORT = 8080
 
-r = redis.Redis(host=NODE_ADDRESS)
+r = redis.Redis(host=REDIS_SERVICE)
 
 
 def receive():
