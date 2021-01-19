@@ -41,7 +41,7 @@ def receive():
         r.set(request_symbol+"_price_"+requestID, predicted_price)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('127.0.0.1', DM_PORT))
+    s.bind(('0.0.0.0', DM_PORT))
     s.listen()
     while True:
         client, address = s.accept()
