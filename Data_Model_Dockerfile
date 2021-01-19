@@ -2,7 +2,11 @@ FROM rickywraith/stock-predict-base:v2
 
 COPY generate_prediction_model.py .
 
-COPY credentials /root/.aws/
+RUN mkdir -p /root/.aws/
+
+RUN printf "[default]\nregion = us-west-1\n" > /root/.aws/config
+
+RUN printf "[default]\naws_access_key_id = $AWS_ACCESS_KEY_ID\naws_secret_access_key = $AWS_SECRET_KEY\n" > /root/.aws/credentials
 
 COPY stocker.py .
 
