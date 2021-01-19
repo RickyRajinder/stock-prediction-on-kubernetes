@@ -7,9 +7,10 @@ spec:
     matchLabels:
       app: web-server-dep
   replicas: 2
-  metadata:
-    labels:
-      app: web-server-dep
+  template:
+    metadata:
+      labels:
+        app: web-server-dep
     spec:
       containers:
       - name: web-server
