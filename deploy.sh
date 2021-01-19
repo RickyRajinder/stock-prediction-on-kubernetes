@@ -10,4 +10,4 @@ docker push rickywraith/stock-predict-ws:$SHA
 kubectl apply -f .
 kubectl set image deployments/data-model data-model=rickywraith/stock-predict-dm:$SHA
 kubectl set image deployments/s3-service s3-service=rickywraith/stock-predict-s3:$SHA
-kubectl set image deployments/web-server web-server=rickywraith/stock-predict-ws:$SHA
+kubectl set image deployments/web-server-dep web-server=rickywraith/stock-predict-ws:$SHA
