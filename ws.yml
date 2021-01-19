@@ -26,6 +26,7 @@ metadata:
   name: web-server
 spec:
   type: LoadBalancer
+  loadBalancerIP: 35.192.84.138
   selector:
     app: web-server-dep
   ports:
