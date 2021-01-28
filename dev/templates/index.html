@@ -1,0 +1,36 @@
+<html>
+   <head>
+      <script
+           src="https://code.jquery.com/jquery-3.2.1.js">
+      </script>
+      <!--Adding our server conn javascript file -->
+      <script type="text/javascript" src="/static/server_conn.js">
+      </script>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   </head>
+   <body>
+      <div>
+          <nav class="navbar navbar-dark bg-dark">
+             <a class="navbar-brand" href="/">Stock Price Prediction</a>
+          </nav>
+
+          <br>
+              
+                
+
+                <form  class="card mx-auto" style="max-width: 18rem;" onsubmit="send_button(); return false;">
+                  <div class="form-group">
+                    <label >Enter a NASDAQ stock ticker and the number of days into the future you want to predict.</label>
+                        <div id="Response"></div><br>
+                        <input class="form-control-sm" type="text" id="name"  placeholder="Enter stock name"><br><br>
+                        <input class="form-control-sm" type="text" id="days" placeholder="Enter days into the future"><br><br>
+                    <input  class="btn btn-primary" type="submit" value="Submit", id="login">
+                    </div>
+                </form>
+
+              <p id="imgContainer" style="text-align: center;">
+
+              </p>
+      </div>
+   </body>
+</html>

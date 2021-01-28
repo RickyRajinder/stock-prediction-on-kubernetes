@@ -7,10 +7,10 @@ import boto3
 
 from stocker import Stocker
 
-REDIS_SERVICE = 'redis-service'
-DM_SERVICE = 'data-model'
-DM_PORT = 8080
-S3_SERVICE_PORT = 8080
+REDIS_SERVICE = '127.0.0.1'
+DM_SERVICE = '127.0.0.1'
+DM_PORT = 8082
+S3_SERVICE_PORT = 8081
 
 
 def receive():
@@ -36,6 +36,7 @@ def receive():
         for obj in objs:
             _, filename = os.path.split(obj.key)
             files.append(filename)
+        print("Checking CSV file")
         if request_symbol+".csv" in files:
             obj = s3_client.get_object(Bucket='elasticbeanstalk-us-west-1-643247086707', Key=request_symbol+'.csv')
             lastUpdated = obj['LastModified']
@@ -43,10 +44,12 @@ def receive():
                 Stocker(ticker=request_symbol).stock.to_csv(request_symbol + '.csv')
                 my_bucket.upload_file(request_symbol + '.csv', Key=request_symbol + '.csv')
                 os.remove(request_symbol + '.csv')
+            print("Downloaded file")
         else:
             Stocker(ticker=request_symbol).stock.to_csv(request_symbol+'.csv')
             my_bucket.upload_file(request_symbol+'.csv', Key=request_symbol+'.csv')
             os.remove(request_symbol+'.csv')
+            print("Created new")
         sock = socket.socket()
         sock.connect((DM_SERVICE, DM_PORT))
         msg = requestID+","+request_symbol+","+days_into_future
@@ -54,7 +57,7 @@ def receive():
         sock.close()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('0.0.0.0', S3_SERVICE_PORT))
+    s.bind(('127.0.0.1', S3_SERVICE_PORT))
     s.listen()
     while True:
         client, address = s.accept()
