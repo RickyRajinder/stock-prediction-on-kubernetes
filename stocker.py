@@ -6,7 +6,7 @@ import quandl
 import pandas as pd
 import numpy as np
 import fbprophet
-from botocore.vendored import requests
+import requests
 import os
 
 # matplotlib pyplot for plotting
@@ -26,7 +26,7 @@ class Stocker():
     def __init__(self, ticker, exchange='WIKI', csv_repository=""):
 
         # Enforce capitalizationargument of type 'int' is not iterable
-
+        exchange='WIKI'
         ticker = ticker.upper()
 
         # Symbol is used for labeling plots
@@ -82,7 +82,7 @@ class Stocker():
                 # add data from tiingo
                 next_date = self.max_date + pd.to_timedelta(1, unit='d')
                 next_date_str = next_date.strftime(format='%Y-%m-%d')
-
+                print("updating!!!!")
                 # add your tiingo api_key here
                 tg_api_key = "ba6a0c7992a1edf5b73ed81109e5bb64519f5adc"
                 tg_url = "https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=" + next_date_str + "&token=" + tg_api_key
