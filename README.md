@@ -1,7 +1,4 @@
 # Stock Prediction on Kubernetes
-### San Jose State University
-### Enterprise Software - CMPE 172 - Spring 2020
-### Byas Dhungana, Saad Siddiqui, Ricky Singh
 
 ##### Github: https://github.com/RickyRajinder/stock-prediction-on-kubernetes
 
