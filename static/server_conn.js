@@ -34,18 +34,19 @@ function send_button()
             dataType: 'json',
             contentType: 'application/json',
         }).done(function(data) {
-            var graph = data['graph'];
-            const byteCharacters = atob(graph);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            if (data['message'].includes('predicted price') ) {
+                var graph = data['graph'];
+                const byteCharacters = atob(graph);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                var blob = new Blob( [ byteArray ], { type: "image/png" } );
+                var urlCreator = window.URL || window.webkitURL;
+                var imageUrl = urlCreator.createObjectURL( blob );
+                $('#imgContainer').append('<img src="' + imageUrl + '" />');
             }
-            const byteArray = new Uint8Array(byteNumbers);
-//            var graph = btoa(data['graph']);
-            var blob = new Blob( [ byteArray ], { type: "image/png" } );
-            var urlCreator = window.URL || window.webkitURL;
-            var imageUrl = urlCreator.createObjectURL( blob );
-            $('#imgContainer').append('<img src="' + imageUrl + '" />');
             $('#Response').html(data['message'].bold());
         });
 
