@@ -84,7 +84,7 @@ class Stocker():
                 next_date_str = next_date.strftime(format='%Y-%m-%d')
 
                 # add your tiingo api_key here
-                tg_api_key = ""
+                tg_api_key = "ba6a0c7992a1edf5b73ed81109e5bb64519f5adc"
                 tg_url = "https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=" + next_date_str + "&token=" + tg_api_key
                 headers = {
                     'Content-Type': 'application/json'
