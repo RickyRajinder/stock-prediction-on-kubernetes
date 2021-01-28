@@ -40,8 +40,11 @@ def get_message():
         if symbol not in symbols:
             resp = {"message": "Please enter a valid NASDAQ stock ticker."}
             return jsonify(resp)
-        elif not isInt(data['days']['days']):
+        elif not isInt(days):
             resp = {"message": "Please enter an integer for number of days."}
+            return jsonify(resp)
+        elif int(days) < 1 or int(days) > 10000:
+            resp = {"message": "Please enter between 1 and 10000 days."}
             return jsonify(resp)
         requestID = data['requestID']['randInt']
         sock = socket.socket()
