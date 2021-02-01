@@ -83,9 +83,9 @@ pytz==2020.1
 pyxdg==0.25
 PyYAML==5.1
 Quandl==3.5.0
-redis==3.5.0
+redis~=3.5.3
 reportlab==3.4.0
-requests==2.23.0
+requests~=2.25.1
 requests-unixsocket==0.1.5
 roman==2.0.0
 rsa==3.4.2

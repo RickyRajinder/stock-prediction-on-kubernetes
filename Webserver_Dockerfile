@@ -6,6 +6,8 @@ COPY companylist.csv .
 
 COPY templates/index.html templates/index.html
 
+RUN pip3 install redis-py-cluster
+
 COPY app.py .
 
 EXPOSE 5000

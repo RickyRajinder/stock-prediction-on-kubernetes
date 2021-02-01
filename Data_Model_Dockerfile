@@ -12,6 +12,8 @@ RUN printf "[default]\nregion = us-west-1\n" > /root/.aws/config
 
 RUN printf "[default]\naws_access_key_id = $AWS_ACCESS_KEY_ID\naws_secret_access_key = $AWS_SECRET_KEY\n" > /root/.aws/credentials
 
+RUN pip3 install redis-py-cluster
+
 COPY stocker.py .
 
 EXPOSE 8080

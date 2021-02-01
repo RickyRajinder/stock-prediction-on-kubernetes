@@ -7,7 +7,9 @@ docker push rickywraith/stock-predict-ws:latest
 docker push rickywraith/stock-predict-dm:$SHA
 docker push rickywraith/stock-predict-s3:$SHA
 docker push rickywraith/stock-predict-ws:$SHA
-kubectl apply -f .
+kubectl apply -f dm.yml
+kubectl apply -f s3.yml
+kubectl apply -f ws.yml
 kubectl set image deployments/data-model data-model=rickywraith/stock-predict-dm:$SHA
 kubectl set image deployments/s3-service s3-service=rickywraith/stock-predict-s3:$SHA
 kubectl set image deployments/web-server-dep web-server=rickywraith/stock-predict-ws:$SHA

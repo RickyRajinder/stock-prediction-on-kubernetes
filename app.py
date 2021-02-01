@@ -3,7 +3,7 @@ import socket
 from time import sleep
 
 import pandas as pd
-import redis
+from rediscluster import RedisCluster
 
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
@@ -14,7 +14,7 @@ CORS(app)
 REDIS_SERVICE = 'redis-service'
 S3_SERVICE_NAME = 's3-service'
 S3_SERVICE_PORT = 8080
-
+REDIS_PORT = 6379
 
 def isInt(s):
     try:
@@ -52,7 +52,8 @@ def get_message():
         msg = requestID + "," + symbol + "," + days
         sock.send(msg.encode('ascii'))
         sock.close()
-        r = redis.Redis(host=REDIS_SERVICE)
+        startup_nodes = [{"host": REDIS_SERVICE, "port": str(REDIS_PORT)}]
+        r = RedisCluster(startup_nodes=startup_nodes, decode_responses=True)
         price = r.get(symbol + "_price_" + requestID)
         while price is None:
             sleep(0.05)

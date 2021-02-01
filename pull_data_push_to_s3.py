@@ -7,7 +7,6 @@ import boto3
 
 from stocker import Stocker
 
-REDIS_SERVICE = 'redis-service'
 DM_SERVICE = 'data-model'
 DM_PORT = 8080
 S3_SERVICE_PORT = 8080
@@ -63,12 +62,3 @@ def receive():
 
 
 receive()
-
-# stock_name = 'MSFT'
-# # stock = Stocker('MSFT', 'CSV', '.')
-
-# model, future = stock.create_prophet_model(days=50, resample=False)
-# model.plot_components(future)
-#
-#
-# # stock.plot_stock(start_date=None, end_date=None, stats=['Adj. Close'], plot_type='basic')

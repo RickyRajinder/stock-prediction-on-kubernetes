@@ -2,15 +2,17 @@ import os
 import threading
 import socket
 import boto3
-import redis
+from rediscluster import RedisCluster
 
 from stocker import Stocker
 REDIS_SERVICE = 'redis-service'
 DM_SERVICE = 'data-model'
 DM_PORT = 8080
+REDIS_PORT = 6379
 
-r = redis.Redis(host=REDIS_SERVICE)
 
+startup_nodes = [{"host": REDIS_SERVICE, "port": str(REDIS_PORT)}]
+r = RedisCluster(startup_nodes=startup_nodes, decode_responses=True)
 
 def receive():
     BUFFER = 1024
