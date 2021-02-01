@@ -80,7 +80,7 @@ python-debian==0.1.32
 python-dotenv==0.10.3
 pytrends==4.7.2
 pytz==2020.1
-pyxdg==0.25
+pyxdg==0.26
 PyYAML==5.1
 Quandl==3.5.0
 redis~=3.5.3
