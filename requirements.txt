@@ -18,7 +18,7 @@ cycler==0.10.0
 Cython==0.29.17
 defer==1.0.6
 distro-info===0.18ubuntu0.18.04.1
-Django==3.0.6
+Django==3.1.6
 docutils==0.14
 ephem==3.7.7.1
 fbprophet==0.6
