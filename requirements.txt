@@ -31,7 +31,7 @@ image==1.5.31
 inflection==0.4.0
 iotop==0.6
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 jmespath==0.9.4
 keyring==10.6.0
 keyrings.alt==3.0
