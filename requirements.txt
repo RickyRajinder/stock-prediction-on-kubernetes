@@ -57,7 +57,7 @@ pandas==1.0.3
 pexpect==4.2.1
 Pillow==7.1.2
 ply==3.11
-protobuf==3.0.0
+protobuf==3.18.3
 pyasn1==0.4.6
 pycairo==1.16.2
 pycrypto==2.6.1
